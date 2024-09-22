@@ -1,24 +1,13 @@
-Tip Time - Solution Code
-=================================
+# Calcuate Tip App 
 
-Starter code for the [Android Basics with Compose](https://developer.android.com/courses/android-basics-compose/course): Tip Time app.
+Calcuate Tip App demo from https://developer.android.com/ kotlin bootcamp.
 
+## Screenshot
 
-Introduction
-------------
-The Tip Time app contains various UI elements for calculating a tip,
-teaching about user input, and State in Compose.
+<figure>
+  <img src="Screenshot.png" alt="Screenshot of Calcuate Tip App" width="50%" />
+  <figcaption>Screenshot of Calcuate Tip App</figcaption>
+</figure>
 
-
-Pre-requisites
---------------
-* Experience with Kotlin syntax.
-* How to create and run a project in Android Studio.
-
-
-Getting Started
----------------
-1. Install Android Studio, if you don't already have it.
-2. Download the sample.
-3. Import the sample into Android Studio.
-4. Build and run the sample.
+## Download
+1. **Download the App**: Download the app from the [Releases tab](https://github.com/SoaresPT/AndroidBasics/releases/tag/CalcuateTip)
