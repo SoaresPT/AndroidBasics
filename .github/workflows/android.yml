@@ -83,15 +83,14 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: '*-debug-apk'
-        path: dist/
+        path: dist
 
     - name: Rename and Upload Release Assets
       run: |
-        for apk in dist/*/debug/app-debug.apk; do
+        for apk in dist/*/app-debug.apk; do
           app_name=$(basename $(dirname $(dirname $apk)))
           mv $apk dist/${app_name}-debug.apk
         done
-      if: always()
 
     - name: Upload Release Assets
       uses: actions/upload-release-asset@v1
