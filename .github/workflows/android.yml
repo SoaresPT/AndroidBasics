@@ -11,15 +11,17 @@ on:
 
 jobs:
   build:
+    if: contains(github.event.head_commit.message, '[deploy]')
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
 
-    - name: Check for skip commit
-      id: skip_check
+    - name: Check for deploy commit
+      if: contains(github.event.head_commit.message, '[deploy]')
+      id: deploy_check
       run: |
-        if git log -1 --pretty=%B | grep -q '\[skip ci\]'; then
+        if ! git log -1 --pretty=%B | grep -E '\[deploy\]'; then
           echo "Skipping build"
           exit 0
         fi
@@ -38,23 +40,24 @@ jobs:
         build-tools: 30.0.3
 
     - name: Grant execute permission for gradlew
-      run: chmod +x business_card/gradlew
+      run: chmod +x calculate_tip_app/gradlew
 
     - name: Build with Gradle
       run: |
-        cd business_card
+        cd calculate_tip_app
         ./gradlew assembleDebug
 
     - name: List APK Directory
-      run: ls -la business_card/app/build/outputs/apk/debug
+      run: ls -la calculate_tip_app/app/build/outputs/apk/debug
 
     - name: Upload APK
       uses: actions/upload-artifact@v3
       with:
-        name: business_card-debug-apk
-        path: business_card/app/build/outputs/apk/debug/app-debug.apk
+        name: calculate_tip_app-debug-apk
+        path: calculate_tip_app/app/build/outputs/apk/debug/app-debug.apk
 
   release:
+    if: contains(github.event.head_commit.message, '[deploy]')
     needs: build
     runs-on: ubuntu-latest
 
@@ -75,11 +78,11 @@ jobs:
     - name: Download APK Artifact
       uses: actions/download-artifact@v3
       with:
-        name: business_card-debug-apk
+        name: calculate_tip_app-debug-apk
         path: dist/
 
     - name: Rename APK
-      run: mv dist/app-debug.apk dist/business_card.apk
+      run: mv dist/app-debug.apk dist/calculate_tip_app.apk
 
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
@@ -87,6 +90,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: dist/business_card.apk
+        asset_path: dist/calculate_tip_app.apk
         asset_name: business_card.apk
         asset_content_type: application/vnd.android.package-archive
