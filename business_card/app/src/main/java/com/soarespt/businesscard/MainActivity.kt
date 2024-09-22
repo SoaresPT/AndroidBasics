@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
                     BusinessCardTemplate(
                         name = "Sergio Soares",
                         textBelow = "Android Developer Extraordinaire",
-                        phoneNumber = "+358 403740545",
+                        phoneNumber = "+358 xxxxxxxxx",
                         modifier = Modifier
                     )
                 }
