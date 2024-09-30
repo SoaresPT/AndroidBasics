@@ -217,11 +217,6 @@ fun MainContent(bluetoothLeScanner: BluetoothLeScanner, requestPermissionsLaunch
         if (existingDevice == null) {
             val newDevice = BluetoothDevice(name, macAddress, rssi, isConnectable)
             devices.add(newDevice)
-        } else {
-            // Update the information for the existing device (e.g., RSSI)
-            existingDevice.rssi = rssi
-            existingDevice.name = name
-            existingDevice.isConnectable = isConnectable
         }
     }
 
