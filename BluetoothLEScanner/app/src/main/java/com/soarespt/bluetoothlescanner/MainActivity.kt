@@ -56,13 +56,6 @@ import com.soarespt.bluetoothlescanner.ui.theme.BluetoothLEScannerTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-data class BluetoothDevice(
-    val name: String,
-    val macAddress: String,
-    val rssi: Int,
-    val isConnectable: Boolean
-)
-
 class MainActivity : ComponentActivity() {
     private lateinit var bluetoothAdapter: BluetoothAdapter
     private lateinit var bluetoothLeScanner: BluetoothLeScanner
@@ -193,39 +186,44 @@ fun MainContent(bluetoothLeScanner: BluetoothLeScanner, requestPermissionsLaunch
     val permissionsHelper = PermissionsHelper()
 
     val scanCallback = object : ScanCallback() {
-        override fun onScanResult(callbackType: Int, result: ScanResult) {
-            val device = result.device
-            val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                listOf(
-                    Manifest.permission.BLUETOOTH_SCAN,
-                    Manifest.permission.BLUETOOTH_CONNECT
-                )
-            } else {
-                listOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                )
-            }
-
-            val permissionsGranted = permissions.all { permission ->
-                ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
-            }
-
-            val name = if (permissionsGranted) {
-                device.name ?: "Unknown"
-            } else {
-                "Unknown"
-            }
-
-            val macAddress = device.address
-            val rssi = result.rssi
-            val isConnectable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) result.isConnectable else false
-
-            val newDevice = BluetoothDevice(name, macAddress, rssi, isConnectable)
-            if (newDevice !in devices) {
-                devices.add(newDevice)
-            }
+    override fun onScanResult(callbackType: Int, result: ScanResult) {
+        val device = result.device
+        val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            listOf(
+                Manifest.permission.BLUETOOTH_SCAN,
+                Manifest.permission.BLUETOOTH_CONNECT
+            )
+        } else {
+            listOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
         }
+        val permissionsGranted = permissions.all { permission ->
+            ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
+        }
+        val name = if (permissionsGranted) {
+            device.name ?: "Unknown"
+        } else {
+            "Unknown"
+        }
+        val macAddress = device.address
+        val rssi = result.rssi
+        val isConnectable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) result.isConnectable else false
+
+        // Check if device is already in the list
+        val existingDevice = devices.find { it.macAddress == macAddress }
+
+        if (existingDevice == null) {
+            val newDevice = BluetoothDevice(name, macAddress, rssi, isConnectable)
+            devices.add(newDevice)
+        } else {
+            // Update the information for the existing device (e.g., RSSI)
+            existingDevice.rssi = rssi
+            existingDevice.name = name
+            existingDevice.isConnectable = isConnectable
+        }
+    }
 
         override fun onBatchScanResults(results: MutableList<ScanResult>) {
             for (result in results) {
@@ -245,7 +243,7 @@ fun MainContent(bluetoothLeScanner: BluetoothLeScanner, requestPermissionsLaunch
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
-                .padding(16.dp) // General padding for the content
+                .padding(16.dp)
         ) {
             Button(
                 onClick = {
@@ -270,16 +268,16 @@ fun MainContent(bluetoothLeScanner: BluetoothLeScanner, requestPermissionsLaunch
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(32.dp) // Increase padding for a thicker margin around the button
-                    .height(64.dp), // Increase height for a larger button
-                shape = RectangleShape // Set the button shape to a rectangle
+                    .padding(32.dp)
+                    .height(64.dp),
+                shape = RectangleShape
             ) {
                 Text(
                     text = if (isScanning) "Scanning..." else "Start Scanning",
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onPrimary,
-                    fontSize = 20.sp, // Bigger text
-                    modifier = Modifier.padding(8.dp) // Padding within the button
+                    fontSize = 20.sp,
+                    modifier = Modifier.padding(8.dp)
                 )
             }
 
