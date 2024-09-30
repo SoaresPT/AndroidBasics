@@ -80,6 +80,26 @@ This repository contains a collection of Android applications developed while fo
         <li><a href="https://github.com/SoaresPT/AndroidBasics/releases/tag/Lemonade">Latest Release</a></li>
       </ul>
     </td>
+    <td>
+      <a href="woof">
+        <img src="woof/Screenshot.png" alt="Woof App" style="width: 200px;"/>
+      </a>
+      <p>Woof App</p>
+      <ul>
+        <li><a href="woof">Source Code</a></li>
+        <li><a href="https://github.com/SoaresPT/AndroidBasics/releases/tag/Woof">Latest Release</a></li>
+      </ul>
+    </td>
+    <td>
+      <a href="BluetoothLEScanner">
+        <img src="BluetoothLEScanner/Screenshot.png" alt="Bluetooth LE Scanner App" style="width: 200px;"/>
+      </a>
+      <p>Bluetooth LE Scanner App</p>
+      <ul>
+        <li><a href="BluetoothLEScanner">Source Code</a></li>
+        <li><a href="https://github.com/SoaresPT/AndroidBasics/releases/tag/BluetoothLEScanner">Latest Release</a></li>
+      </ul>
+    </td>    
   </tr>
 </table>
 
