@@ -14,10 +14,8 @@ Simple Bluetooth Low Energy (BLE) scanner built using Android and Jetpack Compos
 
 Here is a demo of the Bluetooth LE Scanner app in action:
 
-<video width="320" height="240" controls>
-  <source src="Demo.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+
+![Demo GIF](Demo.gif)
 
 
 ## Download
